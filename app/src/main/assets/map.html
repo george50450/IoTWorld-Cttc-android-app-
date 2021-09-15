@@ -1,0 +1,994 @@
+<html >
+    <head>
+        <meta charset="utf-8">
+             <script src="jquery.min.js"></script>
+                <style>
+                    /* -- Map CSS --*/
+                    * {
+                        -webkit-user-select: none; /* Disable selection/copy in UIWebView */
+                    }
+                    #image-map {
+                        width: 100%;
+                        height: 100%;
+                        /*margin: 0 auto 10px auto;*/
+                        /*border: 1px solid #ccc;*/
+                        /*background: #252a2e;*/
+                        background: #ffffff;
+                        /*font-family: 'Quicksand', sans-serif;*/
+                        font-family: "Helvetica Neue";
+                        /*-webkit-font-smoothing: antialiased;*/
+                        /*text-rendering: optimizeLegibility;*/
+                        color: #373156;
+                        text-align: center;
+                    }
+                    .location-pin {
+                        display: inline-block;
+                        position: relative;
+                        top: 50%;
+                        left: 50%;
+                    }
+                    .location-pin img {
+                        width: 26px;
+                        height: 26px;
+                        margin: -3px 0 0 -3px;
+                        z-index: 10;
+                        left: 0%;
+                        top: 0%;
+                        position: absolute;
+                        border-radius: 50%;
+                        background: #32383e;
+                    }
+                    .pin {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50% 50% 50% 0;
+                        background: #32383e;
+                        position: absolute;
+                        transform: rotate(-45deg);
+                        left: 50%;
+                        top: 50%;
+                        margin: -20px 0 0 -20px;
+                    }
+                    .pin:after {
+                        content: '';
+                        width: 26px;
+                        height: 26px;
+                        margin: 2px 0 0 2px;
+                        position: absolute;
+                        border-radius: 50%;
+                    }
+                    .pulse {
+                        text-align:initial;
+                        background: rgba(0,0,0,0.2);
+                        border-radius: 50%;
+                        height: 14px;
+                        width: 14px;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        margin: 11px 0px 0px -12px;
+                        transform: rotateX(55deg);
+                        z-index: -2;
+                    }
+                    .pulse:after {
+                        content: "";
+                        border-radius: 50%;
+                        height: 40px;
+                        width: 40px;
+                        position: absolute;
+                        margin: -13px 0 0 -13px;
+                        animation: pulsate 2.5s ease-out;
+                        animation-iteration-count: infinite;
+                        opacity: 0;
+                        background: rgba(94,190,255,0.5);
+                        box-shadow: 0 0 1px 2px #2d99d3;
+                        animation-delay: 1.1s;
+                    }
+                    .pulse-red {
+                        text-align:initial;
+                        background: rgba(0,0,0,0.2);
+                        border-radius: 50%;
+                        height: 14px;
+                        width: 14px;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        margin: 11px 0px 0px -12px;
+                        transform: rotateX(55deg);
+                        z-index: -2;
+                    }
+                    .pulse-red:after {
+                        content: "";
+                        border-radius: 50%;
+                        height: 40px;
+                        width: 40px;
+                        position: absolute;
+                        margin: -13px 0 0 -13px;
+                        animation: pulsate 2.5s ease-out;
+                        animation-iteration-count: infinite;
+                        opacity: 0;
+                        background: rgba(209,36,19,0.5);
+                        box-shadow: 0 0 1px 2px #d12413;
+                        animation-delay: 1.1s;
+                    }
+                    .pulse-green {
+                        text-align:initial;
+                        background: rgba(0,0,0,0.2);
+                        border-radius: 50%;
+                        height: 14px;
+                        width: 14px;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        margin: 11px 0px 0px -12px;
+                        transform: rotateX(55deg);
+                        z-index: -2;
+                    }
+                    .pulse-green:after {
+                        content: "";
+                        border-radius: 50%;
+                        height: 40px;
+                        width: 40px;
+                        position: absolute;
+                        margin: -13px 0 0 -13px;
+                        animation: pulsate 2.5s ease-out;
+                        animation-iteration-count: infinite;
+                        opacity: 0;
+                        background: rgba(56,181,79,0.5);
+                        box-shadow: 0 0 1px 2px #38b54f;
+                        animation-delay: 1.1s;
+                    }
+                    @-moz-keyframes pulsate {
+                        0% {
+                            transform: scale(0.1, 0.1);
+                            opacity: 0;
+                        }
+                        50% {
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: scale(1.2, 1.2);
+                            opacity: 0;
+                        }
+                    }
+                    @-webkit-keyframes pulsate {
+                        0% {
+                            transform: scale(0.1, 0.1);
+                            opacity: 0;
+                        }
+                        50% {
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: scale(1.2, 1.2);
+                            opacity: 0;
+                        }
+                    }
+                    @-o-keyframes pulsate {
+                        0% {
+                            transform: scale(0.1, 0.1);
+                            opacity: 0;
+                        }
+                        50% {
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: scale(1.2, 1.2);
+                            opacity: 0;
+                        }
+                    }
+                    @keyframes pulsate {
+                        0% {
+                            transform: scale(0.1, 0.1);
+                            opacity: 0;
+                        }
+                        50% {
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: scale(1.2, 1.2);
+                            opacity: 0;
+                        }
+                    }
+                    </style>
+    </head>
+    <body>
+            <div id="image-map"></div>
+            
+            <script src='leaflet.js'></script>
+            
+            <script>
+            // Using leaflet.js to pan and zoom an image map.
+            
+            // Gloabal Variables
+            
+            var floor = "";
+            
+            var sensorLayerVisible = true;
+            var relayLayerVisible = true;
+            var gatewayLayerVisible = true;
+            
+            // FUNCTIONS
+            
+            // Basic Map Functions
+            
+            function loadMapOverlay(width, height, mapUrl){
+            var w = width * 2,
+            h = height * 2,
+            url = mapUrl;
+            
+            // calculate the edges of the image, in coordinate space
+            var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+            var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+            var bounds = new L.LatLngBounds(southWest, northEast);
+            
+            // add the image overlay,
+            // so that it covers the entire map
+            L.imageOverlay(url, bounds).addTo(map);
+            
+            // tell leaflet that the map is exactly as big as the image
+            //map.setMaxBounds(bounds);
+            
+            // Center the map porfavor
+            map.fitBounds(bounds);
+            }
+            
+            function removeAllLayers(){
+            map.eachLayer(function (layer) {
+            map.removeLayer(layer);
+            });
+            console.log('All Layers Removed');
+            }
+            
+            // Extend Controls for custom butttons
+            
+            var b4fg_control =  L.Control.extend({
+            
+            options: {
+            position: 'topright',
+            styleNS: 'leaflet-control-zoomslider'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "B4 Floor G";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '84px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('Ground Floor Button Clicked');
+            removeAllLayers();
+            floor = "B4G";
+            sensorLayerVisible = true;
+            relayLayerVisible = true;
+            gatewayLayerVisible = true;
+            loadMapOverlay(1024, 768, 'B4_G.jpg');
+            B4GSensorMarkerGroup.addTo(map);
+            B4GRelayMarkerGroup.addTo(map);
+            B4GGatewayMarkerGroup.addTo(map);
+            console.log('B4GSensorMarkerGroup Markers on Map');
+            }
+            
+            return container;
+            }
+            });
+            
+            var b4f1_control =  L.Control.extend({
+            
+            options: {
+            position: 'topright'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "B4 Floor 1";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '84px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('1st Floor Button Clicked');
+            removeAllLayers();
+            floor = "B41";
+            sensorLayerVisible = true;
+            relayLayerVisible = true;
+            gatewayLayerVisible = true;
+            loadMapOverlay(1024, 768, 'B4_1.jpg');
+            B41SensorMarkerGroup.addTo(map);
+            B41RelayMarkerGroup.addTo(map);
+            B41GatewayMarkerGroup.addTo(map);
+            console.log('B41SensorMarkerGroup Markers on Map');
+            }
+            
+            return container;
+            }
+            });
+            
+            var b4f2_control =  L.Control.extend({
+            
+            options: {
+            position: 'topright'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "B4 Floor 2";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '84px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('2nd Floor Button Clicked');
+            removeAllLayers();
+            floor = "B42";
+            sensorLayerVisible = true;
+            relayLayerVisible = true;
+            gatewayLayerVisible = true;
+            loadMapOverlay(1024, 768, 'B4_2.jpg');
+            B42SensorMarkerGroup.addTo(map);
+            B42RelayMarkerGroup.addTo(map);
+            B42GatewayMarkerGroup.addTo(map);
+            console.log('B42SensorMarkerGroup Markers on Map');
+            }
+            
+            return container;
+            }
+            });
+            
+            var b6f2_control =  L.Control.extend({
+            
+            options: {
+            position: 'topright'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "B6 Floor 2";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '84px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('2nd Floor Button Clicked');
+            removeAllLayers();
+            floor = "B62";
+            sensorLayerVisible = true;
+            relayLayerVisible = true;
+            gatewayLayerVisible = true;
+            loadMapOverlay(1024, 768, 'B6_2.jpg');
+            B62SensorMarkerGroup.addTo(map);
+            B62RelayMarkerGroup.addTo(map);
+            B62GatewayMarkerGroup.addTo(map);
+            console.log('B62SensorMarkerGroup Markers on Map');
+            }
+            
+            return container;
+            }
+            });
+            
+            var toggleSensors =  L.Control.extend({
+            
+            options: {
+            position: 'bottomleft'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "Sensors";
+            container.style.align = "center";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '80px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('Toggle Sensors Button Clicked');
+            
+            if (sensorLayerVisible == true) {
+            sensorLayerVisible = false;
+            if (floor == "B4G") {
+            map.removeLayer(B4GSensorMarkerGroup);
+            } else if (floor == "B41") {
+            map.removeLayer(B41SensorMarkerGroup);
+            } else if (floor == "B42") {
+            map.removeLayer(B42SensorMarkerGroup);
+            } else if (floor == "B62") {
+            map.removeLayer(B62SensorMarkerGroup);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            } else {
+            sensorLayerVisible = true;
+            if (floor == "B4G") {
+            B4GSensorMarkerGroup.addTo(map);
+            } else if (floor == "B41") {
+            B41SensorMarkerGroup.addTo(map);
+            } else if (floor == "B42") {
+            B42SensorMarkerGroup.addTo(map);
+            } else if (floor == "B62") {
+            B62SensorMarkerGroup.addTo(map);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            }
+            }
+            
+            return container;
+            }
+            });
+            
+            var toggleRelays =  L.Control.extend({
+            
+            options: {
+            position: 'bottomleft'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "Relays";
+            container.style.align = "center";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '80px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('Toggle Relays Button Clicked');
+            
+            if (relayLayerVisible == true) {
+            relayLayerVisible = false;
+            if (floor == "B4G") {
+            map.removeLayer(B4GRelayMarkerGroup);
+            } else if (floor == "B41") {
+            map.removeLayer(B41RelayMarkerGroup);
+            } else if (floor == "B42") {
+            map.removeLayer(B42RelayMarkerGroup);
+            } else if (floor == "B62") {
+            map.removeLayer(B62RelayMarkerGroup);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            } else {
+            relayLayerVisible = true;
+            if (floor == "B4G") {
+            B4GRelayMarkerGroup.addTo(map);
+            } else if (floor == "B41") {
+            B41RelayMarkerGroup.addTo(map);
+            } else if (floor == "B42") {
+            B42RelayMarkerGroup.addTo(map);
+            } else if (floor == "B62") {
+            B62RelayMarkerGroup.addTo(map);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            }
+            }
+            
+            return container;
+            }
+            });
+            
+            var toggleGateways =  L.Control.extend({
+            
+            options: {
+            position: 'bottomleft'
+            },
+            
+            onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            
+            L.DomEvent.disableClickPropagation(container);
+            
+            container.innerHTML = "Gateways";
+            container.style.align = "center";
+            
+            container.style.backgroundColor = 'white';
+            container.style.width = '80px';
+            container.style.height = '20px';
+            
+            container.onmouseover = function(){
+            container.style.backgroundColor = '#f1f1f1';
+            }
+            
+            container.onmouseout = function(){
+            container.style.backgroundColor = 'white';
+            }
+            
+            container.onclick = function(){
+            console.log('Toggle Gateways Button Clicked');
+            
+            if (gatewayLayerVisible == true) {
+            gatewayLayerVisible = false;
+            if (floor == "B4G") {
+            map.removeLayer(B4GGatewayMarkerGroup);
+            } else if (floor == "B41") {
+            map.removeLayer(B41GatewayMarkerGroup);
+            } else if (floor == "B42") {
+            map.removeLayer(B42GatewayMarkerGroup);
+            } else if (floor == "B62") {
+            map.removeLayer(B62GatewayMarkerGroup);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            } else {
+            gatewayLayerVisible = true;
+            if (floor == "B4G") {
+            B4GGatewayMarkerGroup.addTo(map);
+            } else if (floor == "B41") {
+            B41GatewayMarkerGroup.addTo(map);
+            } else if (floor == "B42") {
+            B42GatewayMarkerGroup.addTo(map);
+            } else if (floor == "B62") {
+            B62GatewayMarkerGroup.addTo(map);
+            } else {
+            console.log("Error @ Filter Buttons");
+            }
+            }
+            }
+            
+            return container;
+            }
+            });
+            
+            // Sensor Map
+            
+            // create the slippy map
+            var map = L.map('image-map', {
+            //zoomDelta: 0.25,
+            //zoomSnap: 0,
+            minZoom: 1,
+            maxZoom: 4,
+            center: [0, 0],
+            zoom: 1,
+            crs: L.CRS.Simple,
+            attributionControl: false
+            });
+            
+            // Add to leaflet Floor Selection buttons
+            
+            map.addControl(new b4fg_control());
+            map.addControl(new b4f1_control());
+            map.addControl(new b4f2_control());
+            map.addControl(new b6f2_control());
+            
+            map.addControl(new toggleGateways());
+            map.addControl(new toggleRelays());
+            map.addControl(new toggleSensors());
+            
+            // Custom Icon Pack
+            
+            var customPinSensor = L.divIcon({
+            className: 'location-pin',
+            html: '<img src="sensor_128.png"><div class="pin"></div><div class="pulse"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [10, 30],
+            popupAnchor: [0, -16]
+            });
+            
+            var customPinGateway = L.divIcon({
+            className: 'location-pin',
+            html: '<img src="gateway_128.png"><div class="pin"></div><div class="pulse-red"></div>',
+                iconSize: [30, 30],
+                iconAnchor: [10, 30],
+                popupAnchor: [0, -16]
+                });
+                
+                var customPinRelay = L.divIcon({
+                className: 'location-pin',
+                html: '<img src="relay_128.png"><div class="pin"></div><div class="pulse-green"></div>',
+                    iconSize: [30, 30],
+                    iconAnchor: [10, 30],
+                    popupAnchor: [0, -16]
+                    });
+                    
+                    // Load the Map First Time
+                    
+                    loadMapOverlay(1024, 768, 'B4_G.jpg');
+                    floor = "B4G";
+                    sensorLayerVisible = true;
+                    relayLayerVisible = true;
+                    gatewayLayerVisible = true;
+                    
+                    // Create Layers
+                    
+                    // Sensor Groups Definitions
+                    
+                    var B4GSensorMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B41SensorMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B42SensorMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B62SensorMarkerGroup = L.layerGroup();//.addTo(map);
+                    
+                    // Relays Groups Definitions
+                    
+                    var B4GRelayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B41RelayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B42RelayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B62RelayMarkerGroup = L.layerGroup();//.addTo(map);
+                    
+                    // Gateways Groups Definitions
+                    
+                    var B4GGatewayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B41GatewayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B42GatewayMarkerGroup = L.layerGroup();//.addTo(map);
+                    var B62GatewayMarkerGroup = L.layerGroup();//.addTo(map);
+                  // Get Data Asynchronous from Server
+
+                    function getSensorData() {
+
+                        // Sensor Data
+
+                        $.getJSON("http://monitoring.iotworld.cttc.es/sensors-distribution/sensors/json", function( data ) {
+
+                                  hasSensorError = false;
+
+                                  // B4 Sensors
+
+                                  // B4 Ground Floor
+
+                                  for (i = 0; i < data.length; i++){
+                                  if((data[i].building).localeCompare("B4") == 0) {
+                                  if(parseInt(data[i].floor) == 0) {
+                                  var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Sensor<br><b>Device ID Number:</b> " + data[i].address + "<br><b>Location:</b> Building B4, Ground Floor";
+                                  if (data[i].GraphUrl) {
+                                  popupString += "<br><br><iframe src=\"" + data[i].GraphUrl + "\" width=\"300\" height=\"200\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+                                  }
+                                  var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinSensor})
+                                  .bindPopup(popupString)
+                                  .addTo(B4GSensorMarkerGroup);
+                                  }
+                                  }
+                                  }
+
+                                  B4GSensorMarkerGroup.addTo(map);
+
+                                  // B4 First Floor
+
+                                  for (i = 0; i < data.length; i++){
+                                  if((data[i].building).localeCompare("B4") == 0) {
+                                  if(parseInt(data[i].floor) == 1){
+                                  var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Sensor<br><b>Device ID Number:</b> " + data[i].address + "<br><b>Location:</b> Building B4, First Floor";
+                                  if (data[i].GraphUrl) {
+                                  popupString += "<br><br><iframe src=\"" + data[i].GraphUrl + "\" width=\"300\" height=\"200\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+                                  }
+                                  var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinSensor})
+                                  .bindPopup(popupString)
+                                  .addTo(B41SensorMarkerGroup);
+                                  }
+                                  }
+                                  }
+
+                                  // B4 Second Floor
+
+                                  for (i = 0; i < data.length; i++){
+                                  if((data[i].building).localeCompare("B4") == 0) {
+                                  if(parseInt(data[i].floor) == 2){
+                                  var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Sensor<br><b>Device ID Number:</b> " + data[i].address + "<br><b>Location:</b> Building B4, Second Floor";
+                                  if (data[i].GraphUrl) {
+                                  popupString += "<br><br><iframe src=\"" + data[i].GraphUrl + "\" width=\"300\" height=\"200\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+                                  }
+                                  var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinSensor})
+                                  .bindPopup(popupString)
+                                  .addTo(B42SensorMarkerGroup);
+                                  }
+                                  }
+                                  }
+
+                                  // B6 Sensors
+
+                                  // B6 Second Floor
+
+                                  for (i = 0; i < data.length; i++){
+                                  if((data[i].building).localeCompare("B6") == 0) {
+                                  if(parseInt(data[i].floor) == 2){
+                                  var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Sensor<br><b>Device ID Number:</b> " + data[i].address + "<br><b>Location:</b> Building B6, Second Floor";
+                                  if (data[i].GraphUrl) {
+                                  popupString += "<br><br><iframe src=\"" + data[i].GraphUrl + "\" width=\"300\" height=\"200\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+                                  }
+                                  var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinSensor})
+                                  .bindPopup(popupString)
+                                  .addTo(B62SensorMarkerGroup);
+                                  }
+                                  }
+                                  }
+                                  }).fail( function(d, textStatus, error) {
+                                          console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+                                          hasSensorError = true;
+                                          });
+                    }
+
+            function getRelayData() {
+
+                // Relay data
+
+                $.getJSON("http://monitoring.iotworld.cttc.es/sensors-distribution/relays/json", function( data ) {
+
+                          hasRelayError = false;
+
+                          // B4 Relays
+
+                          // B4 Ground Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 0) {
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Relay<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, Ground Floor";
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinRelay})
+                          .bindPopup(popupString)
+                          .addTo(B4GRelayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          B4GRelayMarkerGroup.addTo(map);
+
+                          // B4 First Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 1){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Relay<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, First Floor";
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinRelay})
+                          .bindPopup(popupString)
+                          .addTo(B41RelayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          // B4 Second Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 2){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Relay<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, Second Floor";
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinRelay})
+                          .bindPopup(popupString)
+                          .addTo(B42RelayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          // B6 Relays
+
+                          // B6 Second Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B6") == 0) {
+                          if(parseInt(data[i].floor) == 2){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Relay<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B6, Second Floor";
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinRelay})
+                          .bindPopup(popupString)
+                          .addTo(B62RelayMarkerGroup);
+                          }
+                          }
+                          }
+                          }).fail( function(d, textStatus, error) {
+                                  console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+                                  hasRelayError = true;
+                                  });
+            }
+
+            function getGatewayData() {
+
+                // Gateway Data
+
+                $.getJSON("http://monitoring.iotworld.cttc.es/sensors-distribution/gateways/json", function( data ) {
+
+                          hasGatewayError = false;
+
+                          // B4 Gateways
+
+                          // B4 Ground Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 0) {
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Gateway<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, Ground Floor" + "<br><b>Gateway IP:</b> " + data[i].GatewayIp;
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinGateway})
+                          .bindPopup(popupString)
+                          .addTo(B4GGatewayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          B4GGatewayMarkerGroup.addTo(map);
+
+                          // B4 First Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 1){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Gateway<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, First Floor" + "<br><b>Gateway IP:</b> " + data[i].GatewayIp;
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinGateway})
+                          .bindPopup(popupString)
+                          .addTo(B41GatewayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          // b4 Second Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B4") == 0) {
+                          if(parseInt(data[i].floor) == 2){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Gateway<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B4, Second Floor" + "<br><b>Gateway IP:</b> " + data[i].GatewayIp;
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinGateway})
+                          .bindPopup(popupString)
+                          .addTo(B42GatewayMarkerGroup);
+                          }
+                          }
+                          }
+
+                          // B6 Gateways
+
+                          // B6 Second Floor
+
+                          for (i = 0; i < data.length; i++){
+                          if((data[i].building).localeCompare("B6") == 0) {
+                          if(parseInt(data[i].floor) == 2){
+                          var popupString = "<h3>" + data[i].name + "</h3><br><b>Device Type:</b> Gateway<br><b>Device ID Number:</b> " + data[i].id + "<br><b>Location:</b> Building B6, Second Floor" + "<br><b>Gateway IP:</b> " + data[i].GatewayIp;
+                          var marker = new L.marker([parseInt(data[i].y_img) * (-1), parseInt(data[i].x_img)],{icon: customPinGateway})
+                          .bindPopup(popupString)
+                          .addTo(B62GatewayMarkerGroup);
+                          }
+                          }
+                          }
+                          }).fail( function(d, textStatus, error) {
+                                  console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+                                  hasGatewayError = true;
+                                  });
+            }
+
+            getSensorData();
+            getRelayData();
+            getGatewayData();
+
+            // Retry
+
+            setTimeout(function(){
+                       if(hasSensorError) {
+                       map.removeLayer(B62SensorMarkerGroup);
+                       floor = "B4G";
+                       sensorLayerVisible = true;
+                       relayLayerVisible = true;
+                       gatewayLayerVisible = true;
+                       getSensorDatadata();
+                       console.log(hasSensorError);
+                       }
+                       }, 250);
+
+                       setTimeout(function(){
+                                  if(hasRelayError) {
+                                  map.removeLayer(B62RelayMarkerGroup);
+                                  floor = "B4G";
+                                  sensorLayerVisible = true;
+                                  relayLayerVisible = true;
+                                  gatewayLayerVisible = true;
+                                  getRelayData();
+                                  console.log(hasRelayError);
+                                  }
+                                  }, 250);
+
+                                  setTimeout(function(){
+                                             if(hasGatewayError) {
+                                             map.removeLayer(B62GatewayMarkerGroup);
+                                             floor = "B4G";
+                                             sensorLayerVisible = true;
+                                             relayLayerVisible = true;
+                                             gatewayLayerVisible = true;
+                                             getGatewayData();
+                                             console.log(hasGatewayError);
+                                             }
+                                             }, 250);
+
+                                             setTimeout(function(){
+                                                        if(hasSensorError) {
+                                                        map.removeLayer(B62SensorMarkerGroup);
+                                                        floor = "B4G";
+                                                        sensorLayerVisible = true;
+                                                        relayLayerVisible = true;
+                                                        gatewayLayerVisible = true;
+                                                        getSensorDatadata();
+                                                        console.log(hasSensorError);
+                                                        }
+                                                        }, 500);
+
+                                                        setTimeout(function(){
+                                                                   if(hasRelayError) {
+                                                                   map.removeLayer(B62RelayMarkerGroup);
+                                                                   floor = "B4G";
+                                                                   sensorLayerVisible = true;
+                                                                   relayLayerVisible = true;
+                                                                   gatewayLayerVisible = true;
+                                                                   getRelayData();
+                                                                   console.log(hasRelayError);
+                                                                   }
+                                                                   }, 500);
+
+                                                                   setTimeout(function(){
+                                                                              if(hasGatewayError) {
+                                                                              map.removeLayer(B62GatewayMarkerGroup);
+                                                                              floor = "B4G";
+                                                                              sensorLayerVisible = true;
+                                                                              relayLayerVisible = true;
+                                                                              gatewayLayerVisible = true;
+                                                                              getGatewayData();
+                                                                              console.log(hasGatewayError);
+                                                                              }
+                                                                              }, 500);
+                </script>
+            <!-- EASY BUTTONS -->
+            <link rel="stylesheet" href="leaflet.css" />
+
+    </body>
+</html>

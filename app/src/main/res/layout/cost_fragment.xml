@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="#e5e5e5"
+    >
+
+    <!--
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/webfrg2" />-->
+
+
+    <Button
+        android:background="@null"
+        android:text="Cost Per Minute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/minutebutton"
+        android:layout_weight="0.2"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:text="-"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/minutetxt"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:textColor="#373156"
+        android:layout_weight="0.4"/>
+
+    <Button
+        android:background="@null"
+        android:text="Cost Per Hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hourbtn"
+        android:layout_weight="0.2"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:text="-"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hourtext"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:textColor="#373156"
+        android:fontFamily="sans-serif"
+        android:layout_weight="0.4"/>
+
+    <Button
+        android:background="@null"
+        android:text="Cost Per Day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/daybtn"
+        android:layout_weight="0.2"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:text="-"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/daytxt"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:textColor="#373156"
+        android:layout_weight="0.3"/>
+
+
+    <Button
+        android:background="@null"
+        android:text="Cost Per Month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/monthbtn"
+        android:layout_weight="0.2"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:text="-"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/monthtxt"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:textColor="#373156"
+        android:layout_weight="0.3"/>
+</LinearLayout>
+</ScrollView>
