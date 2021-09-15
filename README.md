@@ -5,4 +5,4 @@ as well as their values and their costs in real time. (Cttc 2017)
 ------------------------------------------------------------------
 
 ## How the app looks like
-![alt-text-1](https://github.com/george50450/IoTWorld-Cttc-android-app-/blob/main/Images/Screenshot_2017-07-25-14-38-56-351_com.example.george.cttctry2.png) ![alt-text-2](https://github.com/george50450/Hello-Android-TicTacToe-/blob/master/Screenshots/1621369456299.jpg)
+![alt-text-1](https://github.com/george50450/IoTWorld-Cttc-android-app-/blob/main/Images/1.png) ![alt-text-2](https://github.com/george50450/IoTWorld-Cttc-android-app-/blob/main/Images/2.png)
