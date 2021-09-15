@@ -1,6 +1,6 @@
 # IoTWorld-Cttc-android-app-
 It was about an android application, I created during my internship in Catalunya-Spain, which was reading a database to get the sensors that were installed in the building
-as well as their values and their costs in real time. (Cttc 2017)
+as well as their values and their costs in real time. It was also able to display graph plots using grafana and the locations of the sensors. (Cttc 2017)
 
 ------------------------------------------------------------------
 
